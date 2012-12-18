@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+
 
 app = Flask(__name__)
 
@@ -7,8 +8,13 @@ app = Flask(__name__)
 def hello():
     return render_template('index.html')
 
+@app.route('/', methods=['POST'])
+def upload():
+    f = request.files['file']
+    return "got " +  f.content_type + ' - ' + str(f.content_length)
+
 if  __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)
 
