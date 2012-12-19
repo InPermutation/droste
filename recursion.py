@@ -22,7 +22,7 @@ def gif(sauce, frameCount, targetRect):
                  targetSize[1] * factor[1])))
 
     for frame in range(frameCount):
-        dest = Image.new(sauce.mode, fullSize, 255*frame/frameCount)
+        dest = Image.new(sauce.mode, fullSize)
         iterations = 1000 # maximum number of iterations allowed per frame
         i = frame + frameCount
         rectum = scale(i)
