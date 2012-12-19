@@ -15,11 +15,18 @@ def upload():
     f = request.files['file']
 
     im = PIL.Image.open(f).convert("P")
-    
+    im2 = im.transpose(PIL.Image.FLIP_LEFT_RIGHT)
+
+    images = [im, im2]
+    durations = [.1 for image in images]
+    loops = 0 # forever
+    xys = [(0, 0) for image in images]
+    disposes = [1 for image in images]
+
     gw = GifWriter()
     fp = StringIO.StringIO()
 
-    gw.writeGifToFile(fp, [im], [10], 0, [[0, 0]], [2])
+    gw.writeGifToFile(fp, images, durations, loops, xys, disposes)
 
     bytes = fp.getvalue()
     fp.close()
