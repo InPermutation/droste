@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from images2gif import GifWriter
 import StringIO
 import PIL
+import recursion
 
 app = Flask(__name__)
 
@@ -13,11 +14,11 @@ def hello():
 @app.route('/', methods=['POST'])
 def upload():
     f = request.files['file']
+    points = [int(request.form[param]) for param in ['x1', 'y1', 'x2', 'y2']]
 
-    im = PIL.Image.open(f).convert("P")
-    im2 = im.transpose(PIL.Image.FLIP_LEFT_RIGHT)
+    orig = PIL.Image.open(f)
 
-    images = [im, im2]
+    images = [im.convert("P") for im in recursion.gif(orig, 15, points)]
     durations = [.1 for image in images]
     loops = 0 # forever
     xys = [(0, 0) for image in images]
