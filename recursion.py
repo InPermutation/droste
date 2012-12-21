@@ -1,6 +1,27 @@
 from PIL import Image
 import math
 from random import randint
+from images2gif import GifWriter
+from StringIO import StringIO
+
+def renderToString(f, points):
+    orig = Image.open(f)
+
+    images = [im.convert("P") for im in gif(orig, 15, points)]
+    durations = [.1 for image in images]
+    loops = 0 # forever
+    xys = [(0, 0) for image in images]
+    disposes = [1 for image in images]
+
+    gw = GifWriter()
+    fp = StringIO()
+
+    gw.writeGifToFile(fp, images, durations, loops, xys, disposes)
+
+    bytes = fp.getvalue()
+    fp.close()
+
+    return bytes
 
 def gif(sauce, frameCount, targetRect):
     """Given a source image `sauce`, return `frameCount` frames

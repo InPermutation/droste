@@ -1,9 +1,11 @@
 import os
 from flask import Flask, render_template, request
-from images2gif import GifWriter
-import StringIO
-import PIL
 import recursion
+from uuid import uuid4
+from base64 import urlsafe_b64encode
+
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
 
 app = Flask(__name__)
 
@@ -16,23 +18,19 @@ def upload():
     f = request.files['file']
     points = [int(request.form[param]) for param in ['x1', 'y1', 'x2', 'y2']]
 
-    orig = PIL.Image.open(f)
+    bytes = recursion.renderToString(f, points)
 
-    images = [im.convert("P") for im in recursion.gif(orig, 15, points)]
-    durations = [.1 for image in images]
-    loops = 0 # forever
-    xys = [(0, 0) for image in images]
-    disposes = [1 for image in images]
+    bucket = os.environ.get('bucket', 'droste.jkrall.net')
+    k = Key(S3Connection().get_bucket(bucket))
+    k.key = safe_key()
+    k.set_metadata('Content-Type', 'image/gif')
+    k.set_contents_from_string(bytes)
 
-    gw = GifWriter()
-    fp = StringIO.StringIO()
+    url = 'http://' + bucket + '/' + k.key
+    return render_template('image.html', url=url)
 
-    gw.writeGifToFile(fp, images, durations, loops, xys, disposes)
-
-    bytes = fp.getvalue()
-    fp.close()
-
-    return bytes, None, {"Content-Type": "image/gif"}
+def safe_key():
+   return urlsafe_b64encode(uuid4().bytes).rstrip("=") + ".gif" 
 
 if  __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000
