@@ -35,10 +35,10 @@ window.jQuery(function($) {
     function clicked(e) {
         var x = e.offsetX;
         var y = e.offsetY;
-        $("#x"+step).val(x);
-        $("#y"+step).val(y);
 
         if ( step == 1) {
+            $("#x1,#x2").val(x);
+            $("#y1,#y2").val(y);
             $("#submit").attr("disabled", "disabled");
             $("#editor .highlight").remove();
             $("#editor").append( $("<div class='highlight'>"));
@@ -46,6 +46,8 @@ window.jQuery(function($) {
             step = 2;
         }
         else if ( step == 2) {
+            $("#x2").val(x);
+            $("#y2").val(y);
             order("x1", "x2");
             order("y1", "y2");
             highlight(this);
