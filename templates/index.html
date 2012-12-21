@@ -3,6 +3,7 @@
     <script src="{{ url_for("static", filename="interact.js") }}"></script>
 {% endblock %}
 {% block body %}
+<div id="instructions">Select a file to upload</div>
 <form method="post" enctype="multipart/form-data" id="drosteForm">
     <input type="file" name="file" id="file1" />
     <input type="number" name="x1" id="x1" />

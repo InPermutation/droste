@@ -44,6 +44,7 @@ window.jQuery(function($) {
             $("#editor").append( $("<div class='highlight'>"));
             highlight(this);
             step = 2;
+            $("#instructions").text("Click the other corner");
         }
         else if ( step == 2) {
             $("#x2").val(x);
@@ -54,6 +55,7 @@ window.jQuery(function($) {
             $("#submit").removeAttr("disabled");
             
             step = 1;
+            $("#instructions").text("Click \"Recurse\"");
         }
     }
     function moved(e) {
@@ -65,6 +67,7 @@ window.jQuery(function($) {
         highlight(this);
     }
     function editor() {
+        $("#instructions").text("Choose a file to upload");
         $("#editor").css('visibility', 'hidden').empty();
         step = 1;
         $("#submit").attr('disabled', 'disabled');
@@ -82,6 +85,7 @@ window.jQuery(function($) {
                     .click(clicked)
                     .mousemove(moved)
             );
+            $("#instructions").text("Click the first corner of the window");
         };
         reader.readAsDataURL(file);
     }

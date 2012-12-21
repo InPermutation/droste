@@ -2,9 +2,8 @@
 #drosteForm input { display: block; } 
 #srnd {
     min-height: 300px;
-    text-align: center;
 }
-h1 {
+h1, #srnd, #instructions {
     text-align: center;
 }
 #editor {
