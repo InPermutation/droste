@@ -1,13 +1,16 @@
 #drosteForm input[type=number] { display: none; }
 #drosteForm input { display: block; } 
-#editor {
-    text-align: center;
+#srnd {
     min-height: 300px;
+    text-align: center;
+}
+#editor {
     margin: 30px auto;
     position: relative;
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 0 5px 5px #ccc;
+    display: inline-block;
 }
 #editor img {
     border-radius: 20px;

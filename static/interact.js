@@ -63,7 +63,7 @@ window.jQuery(function($) {
         highlight(this);
     }
     function editor() {
-        $("#editor").empty().css('width', '');
+        $("#editor").css('visibility', 'hidden').empty();
         step = 1;
         $("#submit").attr('disabled', 'disabled');
 
@@ -71,17 +71,15 @@ window.jQuery(function($) {
         if (!files) return;
         var file = files[0];
         if (!file) return;
-        $("#editor").hide();
         var reader = new FileReader;
         reader.onload = function (e) {
             if (!e) return;
-            $("#editor").show().append(
+            $("#editor").css('visibility', '').append(
                 $("<img id='bldImg'>")
                     .attr("src", e.target.result)
                     .click(clicked)
                     .mousemove(moved)
             );
-            $("#editor").css('width', $("#bldImg").width() + 20);
         };
         reader.readAsDataURL(file);
     }
