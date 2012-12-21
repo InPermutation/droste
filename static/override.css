@@ -1,11 +1,24 @@
 #drosteForm input[type=number] { display: none; }
 #drosteForm input { display: block; } 
 .hero-unit  * { margin-left: auto; margin-right: auto; text-align: center }
-#editor { min-height: 300px; padding: 0 20px; position: relative; }
+#editor {
+    min-height: 300px;
+    margin: 30px auto;
+    position: relative;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 5px 5px #ccc;
+}
+#editor img {
+    border-radius: 20px;
+    margin: 10px;
+}
 .highlight {
     border: 1px solid yellow;
     background-color: rgba(255, 255, 0, 0.2);
     position: absolute;
     pointer-events: none;
 }
-
+button {
+    margin-top: 50px;
+}

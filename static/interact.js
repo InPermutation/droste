@@ -1,5 +1,15 @@
 window.jQuery(function($) {
     $("#submit").attr("disabled", "disabled");
+    $("#file1")
+        .hide()
+        .after($("<button>")
+            .addClass('btn')
+            .text("Pick a File")
+            .click(function(e) { 
+                e.preventDefault();
+                $("#file1").click();
+            })
+        );
     var step = 1;
     function order(id1, id2) {
         var lesser = $("#"+id1);
@@ -71,6 +81,7 @@ window.jQuery(function($) {
                     .click(clicked)
                     .mousemove(moved)
             );
+            $("#editor").css('width', $("#bldImg").width() + 20);
         };
         reader.readAsDataURL(file);
     }
