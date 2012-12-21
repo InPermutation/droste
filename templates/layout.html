@@ -10,7 +10,9 @@
 </head>
 <body>
     <div class="container">
-        <h1>Droste Builder</h1>
+        <a href="{{ url_for('hello') }}">
+            <h1>Droste Builder</h1>
+        </a>
         {% block body %}{% endblock %}
    </div>
 </body>
