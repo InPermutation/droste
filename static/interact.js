@@ -1,4 +1,4 @@
-(function($) {
+window.jQuery(function($) {
     $("#submit").attr("disabled", "disabled");
     var step = 1;
     function order(id1, id2) {
@@ -75,6 +75,6 @@
         reader.readAsDataURL(file);
     }
     $("#file1").change(editor);
-    $(editor);
-})(window.jQuery);
+    editor();
+});
 
