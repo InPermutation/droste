@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% block scripts %}
-    <script src="static/interact.js"></script>
+    <script src="{{ url_for("static", filename="interact.js") }}"></script>
 {% endblock %}
 {% block body %}
 <form method="post" enctype="multipart/form-data" id="drosteForm">
