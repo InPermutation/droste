@@ -1,7 +1,7 @@
 #drosteForm input[type=number] { display: none; }
 #drosteForm input { display: block; } 
-.hero-unit  * { margin-left: auto; margin-right: auto; text-align: center }
 #editor {
+    text-align: center;
     min-height: 300px;
     margin: 30px auto;
     position: relative;
@@ -19,6 +19,11 @@
     position: absolute;
     pointer-events: none;
 }
-button {
+button.btn {
     margin-top: 50px;
+    display: block;
+}
+button.btn, input[type=submit], #editor {
+    margin-left: auto;
+    margin-right: auto;
 }

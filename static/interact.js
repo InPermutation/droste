@@ -42,8 +42,7 @@ window.jQuery(function($) {
             $("#submit").attr("disabled", "disabled");
             $("#editor .highlight").remove();
             $("#editor").append( $("<div class='highlight'>"));
-            highlight(x+this.offsetLeft, y+this.offsetTop,
-                        x+this.offsetLeft+1, y+this.offsetTop+1);
+            highlight(this);
             step = 2;
         }
         else if ( step == 2) {
@@ -64,7 +63,7 @@ window.jQuery(function($) {
         highlight(this);
     }
     function editor() {
-        $("#editor").empty();
+        $("#editor").empty().css('width', '');
         step = 1;
         $("#submit").attr('disabled', 'disabled');
 
@@ -72,10 +71,11 @@ window.jQuery(function($) {
         if (!files) return;
         var file = files[0];
         if (!file) return;
+        $("#editor").hide();
         var reader = new FileReader;
         reader.onload = function (e) {
             if (!e) return;
-            $("#editor").append(
+            $("#editor").show().append(
                 $("<img id='bldImg'>")
                     .attr("src", e.target.result)
                     .click(clicked)
