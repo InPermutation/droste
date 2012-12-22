@@ -1,17 +1,18 @@
 import os
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session, redirect, url_for
 import recursion
 from uuid import uuid4
 from base64 import urlsafe_b64encode
-
+import requests
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
 app = Flask(__name__)
+app.secret_key = os.environ['SESSION_KEY']
 
 @app.route('/')
 def hello():
-    return render_template('index.html')
+    return render_template('index.html', user=user())
 
 @app.route('/', methods=['POST'])
 def upload():
@@ -27,10 +28,37 @@ def upload():
     k.set_contents_from_string(bytes)
 
     url = 'http://' + bucket + '/' + k.key
-    return render_template('image.html', url=url)
+    return render_template('image.html', url=url, user=user())
 
 def safe_key():
    return urlsafe_b64encode(uuid4().bytes).rstrip("=") + ".gif" 
+
+@app.route('/login')
+def login():
+    return render_template('login.html', id=os.environ.get('CHZ_CLIENT_ID'))
+
+@app.route('/cheez')
+def cheez():
+    code = request.args.get('code', '')
+    if not code:
+        return login()
+    id = os.environ.get('CHZ_CLIENT_ID')
+    secret = os.environ.get('CHZ_CLIENT_SECRET')
+    
+    r = requests.post("https://api.cheezburger.com/oauth/access_token",
+            data={'client_id': id, 'client_secret': secret, 
+            'code': code, 'grant_type': 'authorization_code'})
+    token_data = r.json()
+    session['access_token'] = token_data['access_token']
+    return redirect(url_for('hello'))
+
+def user():
+    if 'access_token' in session:
+        r = requests.get('https://api.cheezburger.com/v1/me',
+            params = {'access_token': session['access_token']})
+        return r.json()['items'][0]
+    else:
+        return None
 
 if  __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000
