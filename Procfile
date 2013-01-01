@@ -1,1 +1,1 @@
-web: gunicorn app:app -w 3 -c config/gunicorn.conf
+web: gunicorn app:app -w 3

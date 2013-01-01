@@ -43,9 +43,13 @@ def safe_key():
 
 @app.route('/login')
 def login():
+    redirect_uri = url_for('cheez', _external=True)
+    if os.environ.get('FORCE_HTTPS') == 'True':
+        redirect_uri = redirect_uri.replace('http://', 'https://')
+
     return render_template('login.html',
         id=os.environ.get('CHZ_CLIENT_ID'),
-        redirect_uri=url_for('cheez', _external=True)
+        redirect_uri=redirect_uri
     )
 
 @app.route('/cheez')
@@ -71,10 +75,6 @@ def user():
         if 'items' in json:
             return json['items'][0]
     return None
-
-@app.route('/environ')
-def environ():
-    return "%r" % request.environ
 
 if  __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000
