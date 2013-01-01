@@ -15,15 +15,15 @@ def client_id():
 def client_secret():
     return os.environ.get('CHZ_CLIENT_SECRET')
 
-def token_data():
+def token_data(code):
     r = requests.post("https://api.cheezburger.com/oauth/access_token",
             data={'client_id': client_id(), 'client_secret': client_secret(), 
             'code': code, 'grant_type': 'authorization_code'})
     return r.json()
- 
+
 def start_session(code):
-    token_data = token_data(code)
-    session['access_token'] = token_data['access_token']
+    tdata = token_data(code)
+    session['access_token'] = tdata['access_token']
 
 def user():
     if 'access_token' in session:
