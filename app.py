@@ -45,10 +45,8 @@ def submit(id):
 
 @app.route('/login')
 def login():
-    return render_template('login.html',
-        id = cheezapi.client_id(),
-        redirect_uri = cheezapi.redirect_uri()
-    )
+    url = "https://api.cheezburger.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s" % (cheezapi.client_id(), cheezapi.redirect_uri())
+    return redirect(url)
 
 @app.route('/cheez')
 def cheez():

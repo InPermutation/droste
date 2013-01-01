@@ -21,7 +21,10 @@
         {% block body %}{% endblock %}
    </div>
    {% if user %}Logged in as {{user.username}}
-   {% else %}Not logged in
+   {% else %}
+    <a href="{{url_for('login')}}">
+        Log in
+    </a> to Cheezburger
    {% endif %}
 </body>
 </html>
