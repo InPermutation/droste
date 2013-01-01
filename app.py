@@ -56,9 +56,10 @@ def user():
     if 'access_token' in session:
         r = requests.get('https://api.cheezburger.com/v1/me',
             params = {'access_token': session['access_token']})
-        return r.json()['items'][0]
-    else:
-        return None
+        json = r.json()
+        if 'items' in json:
+            return json['items'][0]
+    return None
 
 if  __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000
