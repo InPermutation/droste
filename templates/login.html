@@ -1,5 +1,4 @@
 {% extends "layout.html" %}
 {% block body %}
-<a href="https://api.cheezburger.com/oauth/authorize?response_type=code&client_id={{ id }}&redirect_uri=http://aesacus.jkrall.net:4000/cheez">login</a>
-{# TODO: redirect_uri is hardcoded #}
+<a href="https://api.cheezburger.com/oauth/authorize?response_type=code&client_id={{ id }}&redirect_uri={{redirect_uri}}">login</a>
 {% endblock %}

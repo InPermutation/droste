@@ -43,7 +43,10 @@ def safe_key():
 
 @app.route('/login')
 def login():
-    return render_template('login.html', id=os.environ.get('CHZ_CLIENT_ID'))
+    return render_template('login.html',
+        id=os.environ.get('CHZ_CLIENT_ID'),
+        redirect_uri=url_for('cheez', _external=True)
+    )
 
 @app.route('/cheez')
 def cheez():
