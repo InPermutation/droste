@@ -10,6 +10,9 @@ from boto.s3.key import Key
 app = Flask(__name__)
 app.secret_key = os.environ['SESSION_KEY']
 
+def bucket():
+    return os.environ.get('bucket', 'droste.jkrall.net')
+
 @app.route('/')
 def hello():
     return render_template('index.html', user=user())
@@ -20,18 +23,23 @@ def upload():
     points = [int(request.form[param]) for param in ['x1', 'y1', 'x2', 'y2']]
 
     bytes = recursion.renderToString(f, points)
+    
+    key = safe_key()
 
-    bucket = os.environ.get('bucket', 'droste.jkrall.net')
-    k = Key(S3Connection().get_bucket(bucket))
-    k.key = safe_key()
+    k = Key(S3Connection().get_bucket(bucket()))
+    k.key = key + ".gif"
     k.set_metadata('Content-Type', 'image/gif')
     k.set_contents_from_string(bytes)
 
-    url = 'http://' + bucket + '/' + k.key
+    return redirect(url_for('view', id=key))
+
+@app.route('/view/<id>')
+def view(id):
+    url = 'http://' + bucket() + '/' + id + ".gif"
     return render_template('image.html', url=url, user=user())
 
 def safe_key():
-   return urlsafe_b64encode(uuid4().bytes).rstrip("=") + ".gif" 
+   return urlsafe_b64encode(uuid4().bytes).rstrip("=")
 
 @app.route('/login')
 def login():
