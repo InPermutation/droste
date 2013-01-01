@@ -21,6 +21,15 @@ def token_data(code):
             'code': code, 'grant_type': 'authorization_code'})
     return r.json()
 
+def submit(url):
+    SENOR_GIF = 61
+    #TODO: access_token expired
+    #TODO: no access_token (submit anonymously? prompt for login?)
+    r = requests.post("https://api.cheezburger.com/v1/assets",
+            data={'access_token': session['access_token'],
+            'content': url, 'site_id': SENOR_GIF})
+    return r.json()
+
 def start_session(code):
     tdata = token_data(code)
     session['access_token'] = tdata['access_token']

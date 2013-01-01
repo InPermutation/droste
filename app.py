@@ -36,8 +36,12 @@ def upload():
 
 @app.route('/view/<id>')
 def view(id):
-    url = 'http://' + bucket() + '/' + id + ".gif"
-    return render_template('image.html', url=url, user=cheezapi.user())
+    return render_template('image.html', bucket=bucket(), id=id, user=cheezapi.user())
+
+@app.route('/submit/<id>')
+def submit(id):
+    asset = cheezapi.submit('http://' + bucket()+ '/' + id + '.gif')
+    return redirect(asset['items'][0]['share_url'])
 
 @app.route('/login')
 def login():
