@@ -72,6 +72,10 @@ def user():
             return json['items'][0]
     return None
 
+@app.route('/environ')
+def environ():
+    return "%r" % request.environ
+
 if  __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000
     port = int(os.environ.get('PORT', 5000))
