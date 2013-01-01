@@ -1,21 +1,22 @@
 import os
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for
 import recursion
 from uuid import uuid4
 from base64 import urlsafe_b64encode
 import requests
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
+import cheezapi
 
 app = Flask(__name__)
 app.secret_key = os.environ['SESSION_KEY']
 
-def bucket():
-    return os.environ.get('bucket', 'droste.jkrall.net')
-
 @app.route('/')
 def hello():
-    return render_template('index.html', user=user())
+    return render_template('index.html', user=cheezapi.user())
+
+def bucket():
+    return os.environ.get('bucket', 'droste.jkrall.net')
 
 @app.route('/', methods=['POST'])
 def upload():
@@ -24,7 +25,7 @@ def upload():
 
     bytes = recursion.renderToString(f, points)
     
-    key = safe_key()
+    key = urlsafe_b64encode(uuid4().bytes).rstrip("=")
 
     k = Key(S3Connection().get_bucket(bucket()))
     k.key = key + ".gif"
@@ -36,45 +37,22 @@ def upload():
 @app.route('/view/<id>')
 def view(id):
     url = 'http://' + bucket() + '/' + id + ".gif"
-    return render_template('image.html', url=url, user=user())
-
-def safe_key():
-   return urlsafe_b64encode(uuid4().bytes).rstrip("=")
+    return render_template('image.html', url=url, user=cheezapi.user())
 
 @app.route('/login')
 def login():
-    redirect_uri = url_for('cheez', _external=True)
-    if os.environ.get('FORCE_HTTPS') == 'True':
-        redirect_uri = redirect_uri.replace('http://', 'https://')
-
     return render_template('login.html',
-        id=os.environ.get('CHZ_CLIENT_ID'),
-        redirect_uri=redirect_uri
+        id = cheezapi.client_id(),
+        redirect_uri = cheezapi.redirect_uri()
     )
 
 @app.route('/cheez')
 def cheez():
     code = request.args.get('code', '')
     if not code:
-        return login()
-    id = os.environ.get('CHZ_CLIENT_ID')
-    secret = os.environ.get('CHZ_CLIENT_SECRET')
-    
-    r = requests.post("https://api.cheezburger.com/oauth/access_token",
-            data={'client_id': id, 'client_secret': secret, 
-            'code': code, 'grant_type': 'authorization_code'})
-    token_data = r.json()
-    session['access_token'] = token_data['access_token']
+        return redirect(uri_for('login'))
+    cheezapi.start_session(code)
     return redirect(url_for('hello'))
-
-def user():
-    if 'access_token' in session:
-        r = requests.get('https://api.cheezburger.com/v1/me',
-            params = {'access_token': session['access_token']})
-        json = r.json()
-        if 'items' in json:
-            return json['items'][0]
-    return None
 
 if  __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000
