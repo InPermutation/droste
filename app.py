@@ -40,19 +40,24 @@ def view(id):
 
 @app.route('/submit/<id>')
 def submit(id):
-    asset = cheezapi.submit('http://' + bucket()+ '/' + id + '.gif')
-    return redirect(asset['items'][0]['share_url'])
+    if cheezapi.user():
+        asset = cheezapi.submit('http://' + bucket()+ '/' + id + '.gif')
+        return redirect(asset['items'][0]['share_url'])
+    return redirect(cheezapi.auth_uri(id))
 
 @app.route('/login')
 def login():
     return redirect(cheezapi.auth_uri())
 
-@app.route('/cheez')
-def cheez():
+@app.route('/cheez', defaults={'id': None})
+@app.route('/cheez/<id>')
+def cheez(id = None):
     code = request.args.get('code', '')
     if not code:
         return redirect(uri_for('login'))
     cheezapi.start_session(code)
+    if id:
+        return redirect(url_for('submit', id=id))
     return redirect(url_for('hello'))
 
 if  __name__ == '__main__':

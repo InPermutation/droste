@@ -2,15 +2,17 @@ from flask import url_for, session
 import os
 import requests
 
-def redirect_uri():
-    redirect_uri = url_for('cheez', _external=True)
+def redirect_uri(id):
+    redirect_uri = url_for('cheez', _external=True, id=id)
     # API includes protocol as part of URL matching. Use this to force HTTPS:
     if os.environ.get('FORCE_HTTPS') == 'True':
         redirect_uri = redirect_uri.replace('http://', 'https://')
     return redirect_uri
 
-def auth_uri():
-    return "https://api.cheezburger.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s" % (client_id(), redirect_uri())
+def auth_uri(id = None):
+    cid = client_id()
+    uri = redirect_uri(id)
+    return "https://api.cheezburger.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s" % (cid, uri)
 
 def client_id():
     return os.environ.get('CHZ_CLIENT_ID')
@@ -26,8 +28,6 @@ def token_data(code):
 
 def submit(url):
     SENOR_GIF = 61
-    #TODO: access_token expired
-    #TODO: no access_token (submit anonymously? prompt for login?)
     r = requests.post("https://api.cheezburger.com/v1/assets",
             data={'access_token': session['access_token'],
             'content': url, 'site_id': SENOR_GIF})
