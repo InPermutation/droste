@@ -59,6 +59,8 @@ def logout():
 def cheez(id = None):
     code = request.args.get('code', '')
     if not code:
+        if id:
+            return redirect(url_for('view', id=id))
         return redirect(url_for('login'))
     cheezapi.start_session(code)
     if id:
