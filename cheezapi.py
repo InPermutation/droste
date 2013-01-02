@@ -9,6 +9,9 @@ def redirect_uri():
         redirect_uri = redirect_uri.replace('http://', 'https://')
     return redirect_uri
 
+def auth_uri():
+    return "https://api.cheezburger.com/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s" % (client_id(), redirect_uri())
+
 def client_id():
     return os.environ.get('CHZ_CLIENT_ID')
 
