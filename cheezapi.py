@@ -37,6 +37,9 @@ def start_session(code):
     tdata = token_data(code)
     session['access_token'] = tdata['access_token']
 
+def end_session():
+    session.pop('access_token', None)
+
 def user():
     if 'access_token' in session:
         r = requests.get('https://api.cheezburger.com/v1/me',

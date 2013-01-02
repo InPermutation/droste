@@ -49,6 +49,11 @@ def submit(id):
 def login():
     return redirect(cheezapi.auth_uri())
 
+@app.route('/logout')
+def logout():
+    cheezapi.end_session()
+    return redirect(url_for('hello'))
+
 @app.route('/cheez', defaults={'id': None})
 @app.route('/cheez/<id>')
 def cheez(id = None):
