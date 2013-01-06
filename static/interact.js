@@ -1,5 +1,5 @@
 window.jQuery(function($) {
-    $("#submit").attr("disabled", "disabled");
+    $("#submit").attr("disabled", "disabled").hide();
     $("#file1")
         .hide()
         .after($("<button>")
@@ -39,7 +39,7 @@ window.jQuery(function($) {
         if ( step == 1) {
             $("#x1,#x2").val(x);
             $("#y1,#y2").val(y);
-            $("#submit").attr("disabled", "disabled");
+            $("#submit").attr("disabled", "disabled").hide();
             $("#editor .highlight").remove();
             $("#editor").append( $("<div class='highlight'>"));
             highlight(this);
@@ -52,10 +52,10 @@ window.jQuery(function($) {
             order("x1", "x2");
             order("y1", "y2");
             highlight(this);
-            $("#submit").removeAttr("disabled");
+            $("#submit").removeAttr("disabled").show();
             
             step = 1;
-            $("#instructions").text("Click \"Recurse\"");
+            $("#instructions").html("&nbsp;");
         }
     }
     function moved(e) {
@@ -67,10 +67,10 @@ window.jQuery(function($) {
         highlight(this);
     }
     function editor() {
-        $("#instructions").text("Choose a file to upload");
+        $("#instructions").text("Choose an image to upload");
         $("#editor").css('visibility', 'hidden').empty();
         step = 1;
-        $("#submit").attr('disabled', 'disabled');
+        $("#submit").attr('disabled', 'disabled').hide();
 
         var files = $("#file1")[0].files;
         if (!files) return;
@@ -85,7 +85,7 @@ window.jQuery(function($) {
                     .click(clicked)
                     .mousemove(moved)
             );
-            $("#instructions").text("Click the first corner of the window");
+            $("#instructions").text("Select the recursion area of the image");
         };
         reader.readAsDataURL(file);
     }

@@ -1,3 +1,7 @@
+body {
+    background-color: #00718F;
+    color: #333;
+}
 #drosteForm input[type=number] { display: none; }
 #drosteForm input { display: block; } 
 #srnd {
@@ -11,7 +15,7 @@ a, a.btn {
     margin-left: auto;
     margin-right: auto;
     text-align:center;
-    color: #37f;
+    color: #9Cf;
 }
 .btn {
     border-radius: 4px;
@@ -22,12 +26,15 @@ a, a.btn {
 h1, #srnd, #instructions {
     text-align: center;
 }
+#instructions {
+    color: #eee;
+}
 #editor {
     margin: 30px auto;
     position: relative;
-    background-color: white;
+    background-color: #ace;
     border-radius: 20px;
-    box-shadow: 0 0 5px 5px #ccc;
+    box-shadow: 0 0 5px 5px #acf;
     display: inline-block;
 }
 #editor img {
@@ -49,8 +56,12 @@ button.btn, a.btn, input[type=submit], #editor {
     margin-right: auto;
 }
 
-.btn-warning {
+a.btn-warning {
     display: block;
     width: 190px;
-    box-shadow: 0 0 2px 2px #ddd;
+    background-color: #FB941B;
+    color: #111;
+}
+a.btn-warning:hover {
+    color: #444;
 }
