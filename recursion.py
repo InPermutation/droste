@@ -5,7 +5,7 @@ from images2gif import GifWriter
 from StringIO import StringIO
 
 def renderToString(f, points):
-    orig = Image.open(f)
+    orig = Image.open(f).convert("RGB")
 
     images = [im.convert("P") for im in gif(orig, 15, points)]
     durations = [.1 for image in images]
