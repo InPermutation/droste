@@ -3,6 +3,22 @@
 #srnd {
     min-height: 300px;
 }
+a:hover, a:active {
+    text-decoration: underline;
+}
+a, a.btn {
+    text-decoration: none;
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+    color: #37f;
+}
+.btn {
+    border-radius: 4px;
+    padding: 5px 15px;
+    background-color: whiteSmoke;
+    color: #333;
+}
 h1, #srnd, #instructions {
     text-align: center;
 }
